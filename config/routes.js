@@ -1,8 +1,25 @@
 const express = require("express");
 const router = express.Router();
 
-const pages = new (require("../app/controller/pages"))
+const PassportService = require("../app/services/passports-service");
 
-router.get("/", pages.welcome);
+const SessionChallangeStore =
+  require("passport-fido2-webauthn").SessionChallengeStore;
+
+const passportService = new PassportService();
+
+const store = new SessionChallangeStore();
+
+passportService.init(store);
+
+const pages = new (require("../app/controllers/pages"))();
+const auth = new (require("../app/controllers/auth"))();
+const admin = new (require("../app/controllers/admin"))();
+
+router.get("/", pages.welcome, admin.dashboard);
+
+router.get("/login", auth.login);
+
+router.get("/register", auth.register);
 
 module.exports = router;
