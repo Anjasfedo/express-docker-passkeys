@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const PassportService = require("../app/services/passportsService");
+const PassportService = require("../app/services/passports-service");
 
 const SessionChallangeStore =
   require("passport-fido2-webauthn").SessionChallengeStore;
