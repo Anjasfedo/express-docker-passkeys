@@ -8,7 +8,7 @@ const passport = require("passport");
 
 const session = require("express-session");
 
-const SequalizeStore = require("connect-session-sequelize")(session.Store);
+const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
 const path = require("path");
 
@@ -16,7 +16,7 @@ const layout = require("express-ejs-layouts");
 
 const db = require("./db/helpers/init");
 
-const sessionStore = new SequalizeStore({
+const sessionStore = new SequelizeStore({
   db: db,
 });
 
@@ -29,19 +29,18 @@ app.use(express.static(__dirname + "/public"));
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: sessionStore,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-    },
+      secret: process.env.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false,
+      store: sessionStore,
+      cookie: {
+          maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+      },
   })
-);
+)
 
-sessionStore.sync();
-
-app.use(passport.authenticate("session"));
+sessionStore.sync()
+app.use(passport.authenticate('session'))
 
 app.use("/", routes);
 
